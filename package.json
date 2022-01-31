@@ -1,0 +1,18 @@
+{
+  "name": "apicardealership",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Teixa-droid/Api",
+  "author": "Teixa-droid <ruben.a.teixa@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
