@@ -20,7 +20,7 @@ const connectDB = (callback) => {
       }
       dataBase = db.db("cardealership");
       console.log("dataBase up");
-      return;
+      return callback();
       
     });
 };
