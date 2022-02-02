@@ -5,7 +5,7 @@ const express = require('express');
 import Express from "express";
 import dotenv from "dotenv";
 import Cors from "cors";
-import { connectDB, getDB } from "./db/db.js";
+import { connectDB } from "./db/db.js";
 import vehicleRoutes from "./views/vehicles/rotas.js";
 
 dotenv.config({ path: "./.env" });
