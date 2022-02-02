@@ -1,26 +1,19 @@
 /* // import express 
 const express = require('express');
  */
-
 // new way to import express
 import Express from "express";
-import { MongoClient, ObjectId } from "mongodb";
+import dotenv from "dotenv";
 import Cors from "cors";
+import { connectDB } from "./db/db";
 
-const stringConexion =
-  "mongodb+srv://admin:admin@cardealershipproject.stz8u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
-const client = new MongoClient(stringConexion, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-let dataBase;
+dotenv.config({ path: "./.env" });
 
 const app = Express();
 
 app.use(Express.json());
 app.use(Cors());
+
 app.get("/vehicles", (req, res) => {
   console.log("Someone get the route /vehicles");
   dataBase
@@ -103,16 +96,8 @@ app.delete("/vehicles/delete", (req, res) => {
 });
 
 const main = () => {
-  client.connect((err, db) => {
-    if (err) {
-      console.error("error to connect to db");
-      return "error";
-    }
-    dataBase = db.db("cardealership");
-    console.log("dataBase up");
-    return app.listen(5000, () => {
-      console.log("Port 5000");
-    });
+  app.listen(process.env.PORT, () => {
+    console.log(`Port ${process.env.PORT}`);
   });
 };
 
