@@ -5,7 +5,8 @@ const express = require('express');
 import Express from "express";
 import dotenv from "dotenv";
 import Cors from "cors";
-import { connectDB } from "./db/db";
+import { connectDB, getDB } from "./db/db.js";
+import { MongoClient, ObjectId } from "mongodb";
 
 dotenv.config({ path: "./.env" });
 
@@ -16,6 +17,7 @@ app.use(Cors());
 
 app.get("/vehicles", (req, res) => {
   console.log("Someone get the route /vehicles");
+  const dataBase = getDB();
   dataBase
     .collection("vehicle")
     .find({})
@@ -39,6 +41,8 @@ app.post("/vehicles/new", (req, res) => {
       Object.keys(vehiclesData).includes("brand") &&
       Object.keys(vehiclesData).includes("model")
     ) {
+      const dataBase = getDB();
+
       dataBase.collection("vehicle").insertOne(vehiclesData, (err, result) => {
         if (err) {
           console.error(err);
@@ -65,6 +69,7 @@ app.patch("/vehicles/edit", (req, res) => {
   const operation = {
     $set: edition,
   };
+  const dataBase = getDB();
   dataBase
     .collection("vehicle")
     .findOneAndUpdate(
@@ -85,6 +90,8 @@ app.patch("/vehicles/edit", (req, res) => {
 
 app.delete("/vehicles/delete", (req, res) => {
   const vehicleFilter = { _id: new ObjectId(req.body.id) };
+  const dataBase = getDB();
+
   dataBase.collection("vehicle").deleteOne(vehicleFilter, (err, result) => {
     if (err) {
       console.error(err);
@@ -101,4 +108,4 @@ const main = () => {
   });
 };
 
-main();
+main(main);
