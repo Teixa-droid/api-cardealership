@@ -37,4 +37,11 @@ const editVehicle = async (edition, callback) => {
     );
 };
 
-export { queryAllVehicles, createVehicle, editVehicle };
+const removeVehicle = async (id, callback) => {
+  const vehicleFilter = { _id: new ObjectId(id) };
+  const dataBase = getDB();
+
+  await dataBase.collection("vehicle").deleteOne(vehicleFilter, callback);
+};
+
+export { queryAllVehicles, createVehicle, editVehicle, removeVehicle };

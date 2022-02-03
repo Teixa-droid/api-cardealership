@@ -1,6 +1,10 @@
 import Express from "express";
-import { queryAllVehicles, createVehicle, editVehicle } from "../../controllers/vehicles/controller.js";
-import { getDB } from "../../db/db.js";
+import {
+  queryAllVehicles,
+  createVehicle,
+  editVehicle,
+  removeVehicle
+} from "../../controllers/vehicles/controller.js";
 
 const vehicleRoutes = Express.Router();
 
@@ -26,17 +30,7 @@ vehicleRoutes.route("/vehicles/edit").patch((req, res) => {
 });
 
 vehicleRoutes.route("/vehicles/delete").delete((req, res) => {
-  const vehicleFilter = { _id: new ObjectId(req.body.id) };
-  const dataBase = getDB();
-
-  dataBase.collection("vehicle").deleteOne(vehicleFilter, (err, result) => {
-    if (err) {
-      console.error(err);
-      res.sendStatus(500);
-    } else {
-      res.sendStatus(200);
-    }
-  });
+  removeVehicle(req.body.id, genericCallback(res));
 });
 
 export default vehicleRoutes;
