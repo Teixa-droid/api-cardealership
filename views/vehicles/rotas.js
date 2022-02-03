@@ -21,16 +21,16 @@ vehicleRoutes.route("/vehicles").get((req, res) => {
   queryAllVehicles(genericCallback(res));
 });
 
-vehicleRoutes.route("/vehicles/new").post((req, res) => {
+vehicleRoutes.route("/vehicles").post((req, res) => {
   createVehicle(req.body, genericCallback(res));
 });
 
-vehicleRoutes.route("/vehicles/edit").patch((req, res) => {
-  editVehicle(req.body, genericCallback(res));
+vehicleRoutes.route("/vehicles/:id").patch((req, res) => {
+  editVehicle(req.params.id,req.body, genericCallback(res));
 });
 
-vehicleRoutes.route("/vehicles/delete").delete((req, res) => {
-  removeVehicle(req.body.id, genericCallback(res));
+vehicleRoutes.route("/vehicles/:id").delete((req, res) => {
+  removeVehicle(req.params.id, genericCallback(res));
 });
 
 export default vehicleRoutes;
