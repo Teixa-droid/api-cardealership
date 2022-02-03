@@ -1,5 +1,5 @@
 import Express from "express";
-import { queryAllVehicles, createVehicle } from "../../controllers/vehicles/controller.js";
+import { queryAllVehicles, createVehicle, editVehicle } from "../../controllers/vehicles/controller.js";
 import { getDB } from "../../db/db.js";
 
 const vehicleRoutes = Express.Router();
@@ -22,30 +22,7 @@ vehicleRoutes.route("/vehicles/new").post((req, res) => {
 });
 
 vehicleRoutes.route("/vehicles/edit").patch((req, res) => {
-  const edition = req.body;
-  console.log(edition);
-  const vehicleFilter = { _id: new ObjectId(edition.id) };
-  delete edition.id;
-  const operation = {
-    $set: edition,
-  };
-  const dataBase = getDB();
-  dataBase
-    .collection("vehicle")
-    .findOneAndUpdate(
-      vehicleFilter,
-      operation,
-      { upsert: true, returnOriginal: true },
-      (err, result) => {
-        if (err) {
-          console.error("error to update vehicle", err);
-          res.sendStatus(500);
-        } else {
-          console.log("update with success");
-          res.sendStatus(200);
-        }
-      }
-    );
+  editVehicle(req.body, genericCallback(res));
 });
 
 vehicleRoutes.route("/vehicles/delete").delete((req, res) => {

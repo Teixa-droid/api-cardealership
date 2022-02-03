@@ -1,22 +1,40 @@
-import { getDB } from '../../db/db.js';
+import { ObjectId } from "mongodb";
+import { getDB } from "../../db/db.js";
 
 const queryAllVehicles = async (callback) => {
   const dataBase = getDB();
-  await dataBase.collection('vehicle').find().limit(50).toArray(callback);
+  await dataBase.collection("vehicle").find().limit(50).toArray(callback);
 };
 
 const createVehicle = async (vehicleData, callback) => {
   if (
-    Object.keys(vehicleData).includes('name') &&
-    Object.keys(vehicleData).includes('brand') &&
-    Object.keys(vehicleData).includes('model')
+    Object.keys(vehicleData).includes("name") &&
+    Object.keys(vehicleData).includes("brand") &&
+    Object.keys(vehicleData).includes("model")
   ) {
     const dataBase = getDB();
 
-    dataBase.collection('vehicle').insertOne(vehicleData, callback);
+    await dataBase.collection("vehicle").insertOne(vehicleData, callback);
   } else {
-    return 'error';
+    return "error";
   }
 };
 
-export { queryAllVehicles, createVehicle };
+const editVehicle = async (edition, callback) => {
+  const vehicleFilter = { _id: new ObjectId(edition.id) };
+  delete edition.id;
+  const operation = {
+    $set: edition,
+  };
+  const dataBase = getDB();
+  await dataBase
+    .collection("vehicle")
+    .findOneAndUpdate(
+      vehicleFilter,
+      operation,
+      { upsert: true, returnOriginal: true },
+      callback
+    );
+};
+
+export { queryAllVehicles, createVehicle, editVehicle };
