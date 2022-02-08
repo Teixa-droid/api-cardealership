@@ -20,20 +20,22 @@ const createVehicle = async (vehicleData, callback) => {
   }
 };
 
+const viewVehicle = async (id, callback) => {
+  const dataBase = getDB();
+  await dataBase
+    .collection("vehicle")
+    .findOne({ _id: new ObjectId(id) }, callback);
+};
+
 const editVehicle = async (id, edition, callback) => {
-  const vehicleFilter = { _id: new ObjectId(edition.id) };
+  const vehicleFilter = { _id: new ObjectId(id) };
   const operation = {
     $set: edition,
   };
   const dataBase = getDB();
   await dataBase
     .collection("vehicle")
-    .findOneAndUpdate(
-      vehicleFilter,
-      operation,
-      { upsert: true, returnOriginal: true },
-      callback
-    );
+    .findOneAndUpdate(vehicleFilter, operation, { upsert: true, returnOriginal: true }, callback);
 };
 
 const removeVehicle = async (id, callback) => {
@@ -43,4 +45,10 @@ const removeVehicle = async (id, callback) => {
   await dataBase.collection("vehicle").deleteOne(vehicleFilter, callback);
 };
 
-export { queryAllVehicles, createVehicle, editVehicle, removeVehicle };
+export {
+  queryAllVehicles,
+  createVehicle,
+  editVehicle,
+  removeVehicle,
+  viewVehicle,
+};

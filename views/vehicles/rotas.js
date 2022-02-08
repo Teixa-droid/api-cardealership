@@ -3,14 +3,16 @@ import {
   queryAllVehicles,
   createVehicle,
   editVehicle,
-  removeVehicle
+  removeVehicle,
+  viewVehicle
 } from "../../controllers/vehicles/controller.js";
 
 const vehicleRoutes = Express.Router();
 
 const genericCallback = (res) => (err, result) => {
   if (err) {
-    res.status(500).send("Error to connect the vehicles");
+    console.log('error', err);
+    res.status(500).json({ error: err });
   } else {
     res.json(result);
   }
@@ -23,6 +25,11 @@ vehicleRoutes.route("/vehicles").get((req, res) => {
 
 vehicleRoutes.route("/vehicles").post((req, res) => {
   createVehicle(req.body, genericCallback(res));
+});
+
+vehicleRoutes.route("/vehicles/:id").get((req, res) => {
+  console.log('someone did "get" on the road /vehicles');
+  viewVehicle(req.params.id, genericCallback(res));
 });
 
 vehicleRoutes.route("/vehicles/:id").patch((req, res) => {
