@@ -36,7 +36,8 @@ const viewOrCreateUser = async (req, callback) => {
       } else {
         user.auth0ID = user._id;
         delete user._id;
-        user.rol = "inactive";
+        user.rol = 'no rol';
+        user.state = "pending";
         await createUser(user, (err, reply) => callback(err, user));
       }
     });

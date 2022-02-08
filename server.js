@@ -12,6 +12,7 @@ import jwks from "jwks-rsa";
 import vehicleRoutes from "./views/vehicles/rotas.js";
 import userRoutes from "./views/users/rotas.js";
 import sailRoutes from "./views/sales/rotas.js";
+import authorizationUserStateUser from './middleware/authorizationUserStateUser.js';
 
 dotenv.config({ path: "./.env" });
 
@@ -33,6 +34,8 @@ var jwtCheck = jwt({
 });
 
 app.use(jwtCheck);
+
+app.use(authorizationUserStateUser);
 
 app.use(vehicleRoutes);
 app.use(userRoutes);
